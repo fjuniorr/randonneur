@@ -74,3 +74,54 @@ def test_migrate_datasets_simple(generic, update):
     ]
     result = migrate_datasets(update, generic)
     assert expected == result
+
+def test_migrate_datasets_simple_nomatch():
+    
+    generic = [
+        {
+            "name": "n1",
+            "reference product": "rp1",
+            "location": "l1",
+            "unit": "u1",
+            "foo": "foo1",
+            "exchanges": [],
+        },
+        {
+            "name": "n1",
+            "reference product": "rp2",
+            "location": "l2",
+            "unit": "u2",
+            "foo": "foo2",
+            "exchanges": [],
+        },
+    ]
+    
+    update = {
+        "update": [
+            {
+                "source": {"name": "n3", "foo": "foo1"},
+                "target": {"location": "new_location"},
+            },
+            ]
+    }
+    
+    expected = [
+        {
+            "name": "n1",
+            "reference product": "rp1",
+            "location": "l1",
+            "unit": "u1",
+            "foo": "foo1",
+            "exchanges": [],
+        },
+        {
+            "name": "n1",
+            "reference product": "rp2",
+            "location": "l2",
+            "unit": "u2",
+            "foo": "foo2",
+            "exchanges": [],
+        },
+    ]
+    result = migrate_datasets(update, generic)
+    assert expected == result
